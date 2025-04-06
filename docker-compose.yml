@@ -1,0 +1,51 @@
+version: '3.9'
+
+services:
+  api-gateway:
+    build:
+      context: ./api-gateway
+    ports:
+      - "80:80"
+    depends_on:
+      # - user-service
+      - offer-service
+
+  # user-service:
+  #   build:
+  #     context: ./services/user-service
+  #   ports:
+  #     - "8001:8001"
+  #   depends_on:
+  #     - postgres
+  #   environment:
+  #     DATABASE_URL: postgresql+asyncpg://myuser:mypassword@postgres:5432/user-db
+
+  offer-service:
+    build:
+      context: ./services/offer-service
+    ports:
+      - "8002:8002"
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgresql+asyncpg://myuser:mypassword@postgres:5432/offer-db
+
+  postgres:
+    image: postgres:15
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myuser"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
