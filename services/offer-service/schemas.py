@@ -3,7 +3,6 @@ from typing import List, Optional
 from datetime import datetime
 
 class MealCreate(BaseModel):
-    id: int
     name: str
     description: str
 

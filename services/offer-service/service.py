@@ -1,18 +1,10 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from database import SessionLocal
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.future import select
 from models import Offer, Meal
 from schemas import OfferCreate
 
 class OfferService():
 
-    async def get_db(self):
-        async with SessionLocal() as session:
-            yield session
-
-    async def createOffer(self, offer: OfferCreate):
-        db: AsyncSession = Depends(self.get_db)
+    async def createOffer(self, offer: OfferCreate, db: AsyncSession):
         meals = []
         for meal in offer.meals:
             db_meal = Meal(

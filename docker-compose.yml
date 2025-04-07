@@ -18,7 +18,7 @@ services:
   #   depends_on:
   #     - postgres
   #   environment:
-  #     DATABASE_URL: postgresql+asyncpg://myuser:mypassword@postgres:5432/user-db
+  #     DATABASE_URL: postgresql+asyncpg://myuser:mypassword@postgres:5432/user_db
 
   offer-service:
     build:
@@ -28,7 +28,7 @@ services:
     depends_on:
       - postgres
     environment:
-      DATABASE_URL: postgresql+asyncpg://myuser:mypassword@postgres:5432/offer-db
+      DATABASE_URL: postgresql+asyncpg://myuser:mypassword@postgres:5432/offer_db
 
   postgres:
     image: postgres:15
