@@ -1,4 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
+from sqlalchemy.orm import joinedload
 from models import Offer, Meal
 from schemas import OfferCreate
 
@@ -20,3 +22,10 @@ class OfferService():
         )
         db.add(db_offer)
         await db.commit()
+
+    async def get_all_offers(self, db: AsyncSession):
+        result = await db.execute(
+            select(Offer).options(joinedload(Offer.meals))
+        )
+        offers = result.scalars().unique().all()
+        return offers

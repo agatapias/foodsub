@@ -17,3 +17,8 @@ async def get_db():
 async def create_offer(offer: OfferCreate, db: AsyncSession = Depends(get_db)):
     await offerService.createOffer(offer, db)
     return {"message": "User created successfully"}
+
+@router.get("/offers/")
+async def get_all_offers(db: AsyncSession = Depends(get_db)):
+    offers = await offerService.get_all_offers(db)
+    return {"offers": offers}

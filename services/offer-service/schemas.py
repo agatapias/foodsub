@@ -11,3 +11,6 @@ class OfferCreate(BaseModel):
     duration: int
     pricePerDay: float
     meals: List[MealCreate]
+
+    class Config:
+        orm_mode = True 
